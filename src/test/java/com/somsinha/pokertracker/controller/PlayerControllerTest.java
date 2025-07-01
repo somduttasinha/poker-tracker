@@ -1,7 +1,6 @@
 package com.somsinha.pokertracker.controller;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,12 +30,6 @@ class PlayerControllerTest {
 
   @Autowired
   private GameRepository gameRepository;
-
-  @Autowired
-  private PlayerRepository playerRepository;
-
-
-
 
   @Test
   void shouldAddPlayerToGame() throws Exception {
