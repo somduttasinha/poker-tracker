@@ -9,7 +9,6 @@ import com.somsinha.pokertracker.dto.PlayerRequest;
 import com.somsinha.pokertracker.model.Game;
 import com.somsinha.pokertracker.model.Player;
 import com.somsinha.pokertracker.repository.GameRepository;
-import com.somsinha.pokertracker.repository.PlayerRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
