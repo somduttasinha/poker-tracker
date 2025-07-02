@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,10 +35,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 class GameSummaryControllerTest {
 
   @Autowired
@@ -57,6 +61,7 @@ class GameSummaryControllerTest {
 
   @Autowired
   private StackRepository stackRepository;
+
 
   @Test
   void shouldReturnCorrectSummaryForGame() throws Exception {
@@ -101,8 +106,8 @@ class GameSummaryControllerTest {
         .findFirst()
         .orElseThrow();
 
-    assertThat(aliceResult.get("netResult")).isEqualTo(30.0); // 50 - 20
-    assertThat(bobResult.get("netResult")).isEqualTo(-30.0);  // 0 - 30
+    assertThat(aliceResult.get("netResult")).isEqualTo(30); // 50 - 20
+    assertThat(bobResult.get("netResult")).isEqualTo(-30);  // 0 - 30
 
     assertThat(settlements).hasSize(1);
     Map<String, Object> settlement = (Map<String, Object>) settlements.get(0);
@@ -112,7 +117,7 @@ class GameSummaryControllerTest {
 
     assertThat(fromPlayerId).isEqualTo(bob.getId());
     assertThat(toPlayerId).isEqualTo(alice.getId());
-    assertThat(settlement.get("amount")).isEqualTo(30.0);
+    assertThat(settlement.get("amount")).isEqualTo(30);
 
   }
 

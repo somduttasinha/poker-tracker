@@ -10,15 +10,19 @@ import com.somsinha.pokertracker.model.Game;
 import com.somsinha.pokertracker.model.Player;
 import com.somsinha.pokertracker.repository.GameRepository;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 class PlayerControllerTest {
 
   @Autowired
@@ -29,6 +33,7 @@ class PlayerControllerTest {
 
   @Autowired
   private GameRepository gameRepository;
+
 
   @Test
   void shouldAddPlayerToGame() throws Exception {

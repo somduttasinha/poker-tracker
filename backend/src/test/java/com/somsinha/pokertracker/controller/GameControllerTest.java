@@ -9,15 +9,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.somsinha.pokertracker.model.Game;
 import com.somsinha.pokertracker.repository.GameRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 class GameControllerTest {
 
   @Autowired
@@ -45,8 +49,8 @@ class GameControllerTest {
 
     mockMvc.perform(get("/games"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.[0].id").value(createdGame.getId().toString()))
-        .andExpect(jsonPath("$.[0].name").value("Test Poker Night"));
+        .andExpect(jsonPath("$.[0].name").value("Test Poker Night"))
+        .andExpect(jsonPath("$.[0].id").value(createdGame.getId().toString()));
 
 
     assertThat(gameRepository.findById(createdGame.getId())).isPresent();
@@ -54,7 +58,4 @@ class GameControllerTest {
 
     }
 
-  @Test
-  void getAllGames() {
-    }
 }
