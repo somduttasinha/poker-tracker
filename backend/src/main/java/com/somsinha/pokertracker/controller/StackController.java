@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/players/{playerId}/stack")
+@RequestMapping("/api/players/{playerId}/stack")
 public class StackController {
 
   private final StackRepository stackRepository;

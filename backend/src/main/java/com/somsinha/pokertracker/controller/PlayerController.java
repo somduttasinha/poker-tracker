@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/games/{gameId}/players")
+@RequestMapping("/api/games/{gameId}/players")
 public class PlayerController {
 
   private final PlayerRepository playerRepository;

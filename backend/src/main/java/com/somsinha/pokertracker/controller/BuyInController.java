@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/players/{playerId}/buyins")
+@RequestMapping("/api/players/{playerId}/buyins")
 public class BuyInController {
 
   private final BuyInRepository buyInRepository;
