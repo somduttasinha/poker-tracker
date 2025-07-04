@@ -83,7 +83,7 @@ class GameSummaryControllerTest {
         Stack.builder().player(bob).finalAmount(BigDecimal.valueOf(0)).build()
     ));
 
-    String json = mockMvc.perform(get("/games/" + game.getId() + "/summary")
+    String json = mockMvc.perform(get("/api/games/" + game.getId() + "/summary")
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andReturn()

@@ -43,7 +43,7 @@ class PlayerControllerTest {
 
     PlayerRequest request = new PlayerRequest("Test Player");
 
-    String response = mockMvc.perform(post("/games/{gameId}/players", game.getId())
+    String response = mockMvc.perform(post("/api/games/{gameId}/players", game.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isOk())

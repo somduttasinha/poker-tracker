@@ -37,7 +37,7 @@ class GameControllerTest {
   void shouldCreateAndFetchGame() throws Exception {
     Game game = Game.builder().name("Test Poker Night").build();
 
-    String response = mockMvc.perform(post("/games")
+    String response = mockMvc.perform(post("/api/games")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(game)))
         .andExpect(status().isOk())
@@ -47,7 +47,7 @@ class GameControllerTest {
 
     Game createdGame = objectMapper.readValue(response, Game.class);
 
-    mockMvc.perform(get("/games"))
+    mockMvc.perform(get("/api/games"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.[0].name").value("Test Poker Night"))
         .andExpect(jsonPath("$.[0].id").value(createdGame.getId().toString()));

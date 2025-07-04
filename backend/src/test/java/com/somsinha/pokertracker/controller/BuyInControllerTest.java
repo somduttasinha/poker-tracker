@@ -51,7 +51,7 @@ class BuyInControllerTest {
 
     BigDecimal amountBuyIn = new BigDecimal("25.0");
 
-    String response = mockMvc.perform(post("/players/" + player.getId() + "/buyins")
+    String response = mockMvc.perform(post("/api/players/" + player.getId() + "/buyins")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(amountBuyIn)))
         .andExpect(status().isOk())
@@ -66,7 +66,7 @@ class BuyInControllerTest {
 
 
     // Fetch BuyIns
-    String listJson = mockMvc.perform(get("/players/" + player.getId() + "/buyins"))
+    String listJson = mockMvc.perform(get("/api/players/" + player.getId() + "/buyins"))
         .andExpect(status().isOk())
         .andReturn()
         .getResponse()

@@ -49,7 +49,7 @@ class StackControllerTest {
 
     BigDecimal stack = new BigDecimal("150.0");
 
-    String response = mockMvc.perform(post("/players/" + player.getId() + "/stack")
+    String response = mockMvc.perform(post("/api/players/" + player.getId() + "/stack")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(stack)))
         .andExpect(status().isOk())
@@ -63,7 +63,7 @@ class StackControllerTest {
     assertThat(saved.getPlayer().getId()).isEqualTo(player.getId());
     assertThat(saved.getFinalAmount()).isEqualByComparingTo("150.0");
 
-    String getResponse = mockMvc.perform(get("/players/" + player.getId() + "/stack"))
+    String getResponse = mockMvc.perform(get("/api/players/" + player.getId() + "/stack"))
         .andExpect(status().isOk())
         .andReturn()
         .getResponse()
