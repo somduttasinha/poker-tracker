@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/players/{playerId}/buyins")
@@ -35,6 +37,10 @@ public class BuyInController {
   ) {
     Player player = playerRepository.findById(playerId)
         .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+
+    if (player.getGame().isFinished()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Game has already finished");
+    }
 
     BuyIn buyIn =
         BuyIn.builder().player(player).amount(amount).timestamp(LocalDateTime.now()).build();

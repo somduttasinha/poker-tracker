@@ -1,6 +1,7 @@
 package com.somsinha.pokertracker.controller;
 
 
+import com.somsinha.pokertracker.model.BuyIn;
 import com.somsinha.pokertracker.model.Game;
 import com.somsinha.pokertracker.repository.GameRepository;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,14 +27,26 @@ public class GameController {
   }
 
   @PostMapping
-  public Game createGame(@RequestBody Game game) {
+  public ResponseEntity<Game> createGame(@RequestBody Game game) {
     game.setDateCreated(LocalDateTime.now());
-    return gameRepository.save(game);
+    Game saved = gameRepository.save(game);
+    return ResponseEntity.ok(saved);
+  }
+
+  @PutMapping("/end/{id}")
+  public ResponseEntity<Game> endGame(@PathVariable UUID id) {
+    return gameRepository.findById(id).map(
+        g -> {
+          g.setFinished(true);
+          return ResponseEntity.ok(gameRepository.save(g));
+        }
+    ).orElse(ResponseEntity.notFound().build());
   }
 
   @GetMapping
-  public List<Game> getAllGames() {
-    return gameRepository.findAll();
+  public ResponseEntity<List<Game>> getAllGames() {
+    List<Game> games = gameRepository.findAll();
+    return ResponseEntity.ok(games);
   }
 
   @GetMapping("/{id}")

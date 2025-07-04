@@ -6,6 +6,7 @@ import com.somsinha.pokertracker.repository.PlayerRepository;
 import com.somsinha.pokertracker.repository.StackRepository;
 import java.math.BigDecimal;
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/players/{playerId}/stack")
@@ -31,6 +33,10 @@ public class StackController {
       @RequestBody BigDecimal finalAmount) {
     Player player = playerRepository.findById(playerId)
         .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+
+    if (player.getGame().isFinished()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Game has already finished");
+    }
 
     Stack stack = stackRepository.findByPlayer(player).map(existing -> {
       existing.setFinalAmount(finalAmount);

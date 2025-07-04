@@ -7,6 +7,7 @@ import com.somsinha.pokertracker.repository.GameRepository;
 import com.somsinha.pokertracker.repository.PlayerRepository;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/games/{gameId}/players")
@@ -35,6 +37,10 @@ public class PlayerController {
     Game game = gameRepository.findById(gameId).orElseThrow(
         () -> new IllegalArgumentException("Game not found")
     );
+
+    if (game.isFinished()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Game has already finished");
+    }
 
     Player player = Player.builder().name(request.name()).game(game).build();
 
