@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.0.202:5432/poker-db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres-pwd
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  
