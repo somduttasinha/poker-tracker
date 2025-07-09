@@ -5,7 +5,9 @@ import com.somsinha.pokertracker.repository.GameRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.stereotype.Service;
 
+@Service
 public class GameService {
 
     private GameRepository gameRepository;
