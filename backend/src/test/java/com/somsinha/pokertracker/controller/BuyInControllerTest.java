@@ -1,6 +1,5 @@
 package com.somsinha.pokertracker.controller;
 
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,35 +26,34 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class BuyInControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-  @Autowired
-  private PlayerRepository playerRepository;
+  @Autowired private PlayerRepository playerRepository;
 
-  @Autowired
-  private GameRepository gameRepository;
-
+  @Autowired private GameRepository gameRepository;
 
   @Test
   void shouldAddAndFetchBuyInsForPlayer() throws Exception {
     Game game =
-        gameRepository.save(Game.builder().name("Test Game").dateCreated(LocalDateTime.now())
-            .build());
+        gameRepository.save(
+            Game.builder().name("Test Game").dateCreated(LocalDateTime.now()).build());
 
-    Player player =
-        playerRepository.save(Player.builder().name("Test Player").game(game).build());
+    Player player = playerRepository.save(Player.builder().name("Test Player").game(game).build());
 
     BigDecimal amountBuyIn = new BigDecimal("25.0");
 
-    String response = mockMvc.perform(post("/api/players/" + player.getId() + "/buyins")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(amountBuyIn)))
-        .andExpect(status().isOk())
-        .andReturn().getResponse().getContentAsString();
+    String response =
+        mockMvc
+            .perform(
+                post("/api/players/" + player.getId() + "/buyins")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(amountBuyIn)))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
 
     BuyIn savedBuyIn = objectMapper.readValue(response, BuyIn.class);
 
@@ -64,19 +62,18 @@ class BuyInControllerTest {
     assertThat(savedBuyIn.getTimestamp()).isNotNull();
     assertThat(savedBuyIn.getPlayer().getId()).isEqualTo(player.getId());
 
-
     // Fetch BuyIns
-    String listJson = mockMvc.perform(get("/api/players/" + player.getId() + "/buyins"))
-        .andExpect(status().isOk())
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
+    String listJson =
+        mockMvc
+            .perform(get("/api/players/" + player.getId() + "/buyins"))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
 
     BuyIn[] buyIns = objectMapper.readValue(listJson, BuyIn[].class);
 
     assertThat(buyIns).hasSize(1);
     assertThat(buyIns[0].getAmount()).isEqualByComparingTo("25.0");
-
-
   }
 }

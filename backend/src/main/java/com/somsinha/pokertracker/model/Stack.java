@@ -19,9 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Stack {
 
-  @Id
-  @GeneratedValue
-  private UUID id;
+  @Id @GeneratedValue private UUID id;
 
   @OneToOne(optional = false)
   @JoinColumn(name = "player_id", nullable = false, unique = true)

@@ -29,5 +29,4 @@ public class BuyIn {
   private BigDecimal amount;
 
   private LocalDateTime timestamp;
-
 }

@@ -25,37 +25,35 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @Transactional
 class StackControllerTest {
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-  @Autowired
-  private GameRepository gameRepository;
+  @Autowired private GameRepository gameRepository;
 
-  @Autowired
-  private PlayerRepository playerRepository;
-
+  @Autowired private PlayerRepository playerRepository;
 
   @Test
   void shouldCreateAndFetchStack() throws Exception {
 
     Game game =
-        gameRepository.save(Game.builder().name("Test Game").dateCreated(LocalDateTime.now())
-            .build());
+        gameRepository.save(
+            Game.builder().name("Test Game").dateCreated(LocalDateTime.now()).build());
 
     Player player = playerRepository.save(Player.builder().name("Test Player").game(game).build());
 
     BigDecimal stack = new BigDecimal("150.0");
 
-    String response = mockMvc.perform(post("/api/players/" + player.getId() + "/stack")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(stack)))
-        .andExpect(status().isOk())
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
+    String response =
+        mockMvc
+            .perform(
+                post("/api/players/" + player.getId() + "/stack")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(stack)))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
 
     Stack saved = objectMapper.readValue(response, Stack.class);
 
@@ -63,16 +61,17 @@ class StackControllerTest {
     assertThat(saved.getPlayer().getId()).isEqualTo(player.getId());
     assertThat(saved.getFinalAmount()).isEqualByComparingTo("150.0");
 
-    String getResponse = mockMvc.perform(get("/api/players/" + player.getId() + "/stack"))
-        .andExpect(status().isOk())
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
+    String getResponse =
+        mockMvc
+            .perform(get("/api/players/" + player.getId() + "/stack"))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
 
     Stack fetched = objectMapper.readValue(getResponse, Stack.class);
 
     assertThat(fetched.getId()).isEqualTo(saved.getId());
     assertThat(fetched.getFinalAmount()).isEqualByComparingTo("150.0");
   }
-
 }

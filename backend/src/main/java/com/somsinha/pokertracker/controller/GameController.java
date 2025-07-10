@@ -18,42 +18,42 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/games")
 public class GameController {
 
-    private final GameService gameService;
+  private final GameService gameService;
 
-    public GameController(GameService gameService) {
-        this.gameService = gameService;
-    }
+  public GameController(GameService gameService) {
+    this.gameService = gameService;
+  }
 
-    @PostMapping
-    public ResponseEntity<Game> createGame(@RequestBody Game game) {
-        Game saved = gameService.createGame(game);
-        return ResponseEntity.ok(saved);
-    }
+  @PostMapping
+  public ResponseEntity<Game> createGame(@RequestBody Game game) {
+    Game saved = gameService.createGame(game);
+    return ResponseEntity.ok(saved);
+  }
 
-    @PutMapping("/end/{id}")
-    public ResponseEntity<Game> endGame(@PathVariable UUID id) {
-        try {
-            return ResponseEntity.ok(gameService.endGame(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+  @PutMapping("/end/{id}")
+  public ResponseEntity<Game> endGame(@PathVariable UUID id) {
+    try {
+      return ResponseEntity.ok(gameService.endGame(id));
+    } catch (RuntimeException e) {
+      return ResponseEntity.notFound().build();
     }
+  }
 
-    @GetMapping
-    public ResponseEntity<List<Game>> getAllGames(@RequestParam(required = false) Boolean finished) {
-        if (finished != null && !finished) {
-            return ResponseEntity.ok(gameService.getAllGames());
-        } else {
-            return ResponseEntity.ok(gameService.getAllActiveGames());
-        }
+  @GetMapping
+  public ResponseEntity<List<Game>> getAllGames(@RequestParam(required = false) Boolean finished) {
+    if (finished != null && !finished) {
+      return ResponseEntity.ok(gameService.getAllGames());
+    } else {
+      return ResponseEntity.ok(gameService.getAllActiveGames());
     }
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Game> getGameById(@PathVariable UUID id) {
-        try {
-            return ResponseEntity.ok(gameService.getGame(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+  @GetMapping("/{id}")
+  public ResponseEntity<Game> getGameById(@PathVariable UUID id) {
+    try {
+      return ResponseEntity.ok(gameService.getGame(id));
+    } catch (RuntimeException e) {
+      return ResponseEntity.notFound().build();
     }
+  }
 }

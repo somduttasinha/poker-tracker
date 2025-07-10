@@ -32,11 +32,11 @@ public class BuyInController {
 
   @PostMapping
   public ResponseEntity<BuyIn> addBuyIn(
-      @PathVariable UUID playerId,
-      @RequestBody BigDecimal amount
-  ) {
-    Player player = playerRepository.findById(playerId)
-        .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+      @PathVariable UUID playerId, @RequestBody BigDecimal amount) {
+    Player player =
+        playerRepository
+            .findById(playerId)
+            .orElseThrow(() -> new IllegalArgumentException("Player not found"));
 
     if (player.getGame().isFinished()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Game has already finished");
@@ -50,10 +50,11 @@ public class BuyInController {
 
   @GetMapping
   public ResponseEntity<List<BuyIn>> getBuyIns(@PathVariable UUID playerId) {
-    Player player = playerRepository.findById(playerId)
-        .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+    Player player =
+        playerRepository
+            .findById(playerId)
+            .orElseThrow(() -> new IllegalArgumentException("Player not found"));
 
     return ResponseEntity.ok(buyInRepository.findByPlayer(player));
   }
-
 }

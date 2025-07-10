@@ -9,13 +9,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.somsinha.pokertracker.model.Game;
 import com.somsinha.pokertracker.repository.GameRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,38 +22,37 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class GameControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired
-  private GameRepository gameRepository;
+  @Autowired private GameRepository gameRepository;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
   @Test
   void shouldCreateAndFetchGame() throws Exception {
     Game game = Game.builder().name("Test Poker Night").build();
 
-    String response = mockMvc.perform(post("/api/games")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(game)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").exists())
-        .andExpect(jsonPath("$.name").value("Test Poker Night"))
-        .andReturn().getResponse().getContentAsString();
+    String response =
+        mockMvc
+            .perform(
+                post("/api/games")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(game)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").exists())
+            .andExpect(jsonPath("$.name").value("Test Poker Night"))
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
 
     Game createdGame = objectMapper.readValue(response, Game.class);
 
-    mockMvc.perform(get("/api/games"))
+    mockMvc
+        .perform(get("/api/games"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.[0].name").value("Test Poker Night"))
         .andExpect(jsonPath("$.[0].id").value(createdGame.getId().toString()));
 
-
     assertThat(gameRepository.findById(createdGame.getId())).isPresent();
-
-
-    }
-
+  }
 }

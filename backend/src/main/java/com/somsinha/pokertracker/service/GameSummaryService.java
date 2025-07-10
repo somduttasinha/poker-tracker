@@ -22,7 +22,9 @@ public class GameSummaryService {
   private final BuyInRepository buyInRepository;
   private final StackRepository stackRepository;
 
-  public GameSummaryService(PlayerRepository playerRepository, BuyInRepository buyInRepository,
+  public GameSummaryService(
+      PlayerRepository playerRepository,
+      BuyInRepository buyInRepository,
       StackRepository stackRepository) {
     this.playerRepository = playerRepository;
     this.buyInRepository = buyInRepository;
@@ -32,18 +34,25 @@ public class GameSummaryService {
   public List<PlayerResultDTO> getPlayerResults(Game game) {
     List<Player> players = playerRepository.findByGame(game);
 
-    return players.stream().map(player -> {
-      BigDecimal totalBuyIn = buyInRepository.findByPlayer(player).stream()
-          .map(BuyIn::getAmount)
-          .reduce(BigDecimal.ZERO, BigDecimal::add);
+    return players.stream()
+        .map(
+            player -> {
+              BigDecimal totalBuyIn =
+                  buyInRepository.findByPlayer(player).stream()
+                      .map(BuyIn::getAmount)
+                      .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-      BigDecimal finalStack = stackRepository.findByPlayer(player)
-          .map(Stack::getFinalAmount)
-          .orElse(BigDecimal.ZERO);
+              BigDecimal finalStack =
+                  stackRepository
+                      .findByPlayer(player)
+                      .map(Stack::getFinalAmount)
+                      .orElse(BigDecimal.ZERO);
 
-      BigDecimal net = finalStack.subtract(totalBuyIn);
-      return new PlayerResultDTO(player.getId(), player.getName(), totalBuyIn, finalStack, net);
-    }).collect(Collectors.toList());
+              BigDecimal net = finalStack.subtract(totalBuyIn);
+              return new PlayerResultDTO(
+                  player.getId(), player.getName(), totalBuyIn, finalStack, net);
+            })
+        .collect(Collectors.toList());
   }
 
   public List<SettlementDTO> calculateSettlements(List<PlayerResultDTO> playerResults) {
@@ -52,11 +61,21 @@ public class GameSummaryService {
 
     for (PlayerResultDTO r : playerResults) {
       if (r.getNetResult().compareTo(BigDecimal.ZERO) < 0) {
-        owes.add(new PlayerResultDTO(r.getPlayerId(), r.getPlayerName(), r.getTotalBuyIn(),
-            r.getFinalStack(), r.getNetResult().abs()));
+        owes.add(
+            new PlayerResultDTO(
+                r.getPlayerId(),
+                r.getPlayerName(),
+                r.getTotalBuyIn(),
+                r.getFinalStack(),
+                r.getNetResult().abs()));
       } else {
-        gets.add(new PlayerResultDTO(r.getPlayerId(), r.getPlayerName(), r.getTotalBuyIn(),
-            r.getFinalStack(), r.getNetResult()));
+        gets.add(
+            new PlayerResultDTO(
+                r.getPlayerId(),
+                r.getPlayerName(),
+                r.getTotalBuyIn(),
+                r.getFinalStack(),
+                r.getNetResult()));
       }
     }
 
@@ -69,11 +88,7 @@ public class GameSummaryService {
 
       BigDecimal amount = debtor.getNetResult().min(creditor.getNetResult());
 
-      settlements.add(new SettlementDTO(
-          debtor.getPlayerId(),
-          creditor.getPlayerId(),
-          amount
-      ));
+      settlements.add(new SettlementDTO(debtor.getPlayerId(), creditor.getPlayerId(), amount));
 
       debtor.setNetResult(debtor.getNetResult().subtract(amount));
       creditor.setNetResult(creditor.getNetResult().subtract(amount));
@@ -84,5 +99,4 @@ public class GameSummaryService {
 
     return settlements;
   }
-
 }

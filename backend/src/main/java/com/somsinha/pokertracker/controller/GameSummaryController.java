@@ -20,16 +20,18 @@ public class GameSummaryController {
   private final GameRepository gameRepository;
   private final GameSummaryService gameSummaryService;
 
-  public GameSummaryController(GameRepository gameRepository, GameSummaryService gameSummaryService) {
+  public GameSummaryController(
+      GameRepository gameRepository, GameSummaryService gameSummaryService) {
     this.gameRepository = gameRepository;
     this.gameSummaryService = gameSummaryService;
   }
 
   @GetMapping
   public Map<String, Object> getSummary(@PathVariable UUID gameId) {
-    Game game = gameRepository.findById(gameId).orElseThrow(
-        () -> new IllegalArgumentException("Game not found")
-    );
+    Game game =
+        gameRepository
+            .findById(gameId)
+            .orElseThrow(() -> new IllegalArgumentException("Game not found"));
 
     List<PlayerResultDTO> results = gameSummaryService.getPlayerResults(game);
     List<SettlementDTO> settlements = gameSummaryService.calculateSettlements(results);

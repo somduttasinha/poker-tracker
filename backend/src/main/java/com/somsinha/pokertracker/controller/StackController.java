@@ -29,30 +29,40 @@ public class StackController {
   }
 
   @PostMapping
-  public ResponseEntity<Stack> submitStack(@PathVariable UUID playerId,
-      @RequestBody BigDecimal finalAmount) {
-    Player player = playerRepository.findById(playerId)
-        .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+  public ResponseEntity<Stack> submitStack(
+      @PathVariable UUID playerId, @RequestBody BigDecimal finalAmount) {
+    Player player =
+        playerRepository
+            .findById(playerId)
+            .orElseThrow(() -> new IllegalArgumentException("Player not found"));
 
     if (player.getGame().isFinished()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Game has already finished");
     }
 
-    Stack stack = stackRepository.findByPlayer(player).map(existing -> {
-      existing.setFinalAmount(finalAmount);
-      return existing;
-    })
-        .orElse(Stack.builder().player(player).finalAmount(finalAmount).build());
+    Stack stack =
+        stackRepository
+            .findByPlayer(player)
+            .map(
+                existing -> {
+                  existing.setFinalAmount(finalAmount);
+                  return existing;
+                })
+            .orElse(Stack.builder().player(player).finalAmount(finalAmount).build());
 
     return ResponseEntity.ok(stackRepository.save(stack));
   }
 
   @GetMapping
   public ResponseEntity<Stack> getStack(@PathVariable UUID playerId) {
-    Player player = playerRepository.findById(playerId)
-        .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+    Player player =
+        playerRepository
+            .findById(playerId)
+            .orElseThrow(() -> new IllegalArgumentException("Player not found"));
 
-    return stackRepository.findByPlayer(player).map(ResponseEntity::ok)
+    return stackRepository
+        .findByPlayer(player)
+        .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
   }
 }

@@ -24,19 +24,18 @@ public class PlayerController {
   private final PlayerRepository playerRepository;
   private final GameRepository gameRepository;
 
-  public PlayerController(PlayerRepository playerRepository,
-      GameRepository gameRepository) {
+  public PlayerController(PlayerRepository playerRepository, GameRepository gameRepository) {
     this.playerRepository = playerRepository;
     this.gameRepository = gameRepository;
   }
 
   @PostMapping
   public ResponseEntity<Player> addPlayer(
-      @PathVariable UUID gameId, @RequestBody PlayerRequest request
-  ) {
-    Game game = gameRepository.findById(gameId).orElseThrow(
-        () -> new IllegalArgumentException("Game not found")
-    );
+      @PathVariable UUID gameId, @RequestBody PlayerRequest request) {
+    Game game =
+        gameRepository
+            .findById(gameId)
+            .orElseThrow(() -> new IllegalArgumentException("Game not found"));
 
     if (game.isFinished()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Game has already finished");
@@ -51,9 +50,10 @@ public class PlayerController {
 
   @GetMapping
   public ResponseEntity<List<Player>> getPlayers(@PathVariable UUID gameId) {
-    Game game = gameRepository.findById(gameId).orElseThrow(() -> new IllegalArgumentException(
-        "Game not found")
-    );
+    Game game =
+        gameRepository
+            .findById(gameId)
+            .orElseThrow(() -> new IllegalArgumentException("Game not found"));
 
     return ResponseEntity.ok(playerRepository.findByGame(game));
   }
