@@ -22,5 +22,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           npm run release
-          git push --follow-tags origin main
-
+      - name: Configure Git for pushing with token
+        run: git remote set-url origin https://x-access-token:${{ secrets.TOKEN }}@github.com/somduttasinha/poker-tracker.git
+      - name: Push release
+        run: git push --follow-tags origin main
