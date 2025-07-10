@@ -41,7 +41,9 @@ public class GameController {
 
   /**
    * Get all games, optionally filtered by finished status.
-   * @param finished if true, returns only finished games; if false or null, returns all active games.
+   *
+   * @param finished if true, returns only finished games; if false or null, returns all active
+   *     games.
    * @return ResponseEntity containing a list of games.
    */
   @GetMapping
