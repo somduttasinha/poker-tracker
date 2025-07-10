@@ -1,0 +1,27 @@
+{
+  "name": "poker-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "standard-version": "^9.5.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+    "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/somduttasinha/poker-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/somduttasinha/poker-tracker/issues"
+  },
+  "homepage": "https://github.com/somduttasinha/poker-tracker#readme"
+}
