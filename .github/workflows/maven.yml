@@ -21,13 +21,18 @@ jobs:
           cache: maven
 
       - name: Compile
+        working-directory: backend
         run: mvn compile
 
       - name: Run tests
+        working-directory: backend
         run: mvn test
 
       - name: Run Spotless
+        working-directory: backend
         run: mvn spotless:check
 
       - name: Update dependency graph
         uses: advanced-security/maven-dependency-submission-action@v4
+        with:
+          working-directory: backend
