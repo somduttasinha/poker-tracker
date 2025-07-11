@@ -2,6 +2,7 @@ package com.somsinha.pokertracker.controller;
 
 import com.somsinha.pokertracker.model.Game;
 import com.somsinha.pokertracker.service.GameService;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,22 @@ public class GameController {
       return ResponseEntity.ok(gameService.getAllGames());
     } else {
       return ResponseEntity.ok(gameService.getAllActiveGames());
+    }
+  }
+
+  /**
+   * Get all finished games since a specific date.
+   *
+   * @param since the number of hours since which to retrieve finished games.
+   * @return ResponseEntity containing a list of finished games.
+   */
+  @GetMapping("/finished")
+  public ResponseEntity<List<Game>> getFinishedGamesSince(@RequestParam("since") Integer since) {
+    try {
+      LocalDateTime dateTime = LocalDateTime.now().minusHours(since);
+      return ResponseEntity.ok(gameService.getFinishedGamesSince(dateTime));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().build();
     }
   }
 

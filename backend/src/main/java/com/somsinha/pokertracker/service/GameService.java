@@ -31,17 +31,19 @@ public class GameService {
   }
 
   public Game endGame(UUID id) {
-    Game game =
-        gameRepository
-            .findById(id)
-            .map(
-                g -> {
-                  g.setFinished(true);
-                  return gameRepository.save(g);
-                })
-            .orElseThrow(() -> new RuntimeException("Game not found")); // TODO:
+    // TODO:
     // create custom exception
-    return game;
+    return gameRepository
+        .findById(id)
+        .map(
+            g -> {
+              g.setFinished(true);
+              if (g.getDateFinished() == null) {
+                g.setDateFinished(LocalDateTime.now());
+              }
+              return gameRepository.save(g);
+            })
+        .orElseThrow(() -> new RuntimeException("Game not found"));
   }
 
   public Game getGame(UUID id) {
@@ -49,5 +51,9 @@ public class GameService {
         .findById(id)
         .orElseThrow(() -> new RuntimeException("Game not found")); // TODO:
     // create custom exception
+  }
+
+  public List<Game> getFinishedGamesSince(LocalDateTime date) {
+    return gameRepository.findByDateFinishedAfter(date);
   }
 }
