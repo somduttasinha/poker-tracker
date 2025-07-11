@@ -10,6 +10,11 @@ export const getGames = async () => {
     return res.data;
 };
 
+export const getFinishedGamesSince = async (since: number) => {
+    const res = await api.get("/games/finished", { params: { since } });
+    return res.data;
+};
+
 export const createGame = async (name: string) => {
     const res = await api.post("/games", { name });
     return res.data;
