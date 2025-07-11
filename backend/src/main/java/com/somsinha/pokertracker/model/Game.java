@@ -24,5 +24,7 @@ public class Game {
 
   private LocalDateTime dateCreated;
 
+  private LocalDateTime dateFinished;
+
   private boolean finished;
 }
