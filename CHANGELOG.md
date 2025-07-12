@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/somduttasinha/poker-tracker/compare/v0.2.1...v0.3.0) (2025-07-12)
+
+
+### Features
+
+* update svg ([#14](https://github.com/somduttasinha/poker-tracker/issues/14)) ([fa51679](https://github.com/somduttasinha/poker-tracker/commit/fa516799395c861fceba3a29284d85e758039e6e))
+
 ## [0.2.1](https://github.com/somduttasinha/poker-tracker/compare/v0.2.0...v0.2.1) (2025-07-12)
 
 
