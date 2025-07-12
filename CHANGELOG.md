@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/somduttasinha/poker-tracker/compare/v0.2.0...v0.2.1) (2025-07-12)
+
+
+### Bug Fixes
+
+* remove dollar sign ([a64bfa1](https://github.com/somduttasinha/poker-tracker/commit/a64bfa1bc4bd6059ed004ec64103f1475d24a98b))
+
 ## [0.2.0](https://github.com/somduttasinha/poker-tracker/compare/v0.1.0...v0.2.0) (2025-07-11)
 
 
