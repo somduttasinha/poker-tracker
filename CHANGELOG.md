@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/somduttasinha/poker-tracker/compare/v0.3.0...v0.3.1) (2025-07-12)
+
+
+### Bug Fixes
+
+* **ui:** remove dollar in game detail page ([#17](https://github.com/somduttasinha/poker-tracker/issues/17)) ([45cc886](https://github.com/somduttasinha/poker-tracker/commit/45cc886fb2a9655c5df96b1ff14a0c36d7bf1ced))
+
 ## [0.3.0](https://github.com/somduttasinha/poker-tracker/compare/v0.2.1...v0.3.0) (2025-07-12)
 
 
