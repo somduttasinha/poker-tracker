@@ -6,6 +6,7 @@ import com.somsinha.pokertracker.model.Game;
 import com.somsinha.pokertracker.repository.GameRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,11 @@ class GameServiceTest {
                 .build()));
 
     gameService = new GameService(gameRepository);
+  }
+
+  @AfterEach
+  void tearDown() {
+    gameRepository.deleteAll();
   }
 
   @Test
