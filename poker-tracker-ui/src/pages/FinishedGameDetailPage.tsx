@@ -122,7 +122,7 @@ export default function FinishedGameDetailPage() {
                         {allBuyIns.map((b) => (
                             <li key={b.id}>
                                 🪙 <span className="font-semibold">{b.player.name}</span> bought
-                                in for <span className="text-green-700">${b.amount}</span>
+                                in for <span className="text-green-700">{b.amount}</span>
                             </li>
                         ))}
                     </ul>
