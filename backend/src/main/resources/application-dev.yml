@@ -1,4 +1,10 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://auth.somsinha.com/realms/poker-tracker
+          jwk-set-uri: https://auth.somsinha.com/realms/poker-tracker/protocol/openid-connect/certs
   datasource:
     url: jdbc:h2:mem:pokerdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -11,3 +17,9 @@ spring:
   h2:
     console:
       enabled: true
+
+jwt:
+  auth:
+    converter:
+      resource-id: poker-tracker-api
+      principal-attribute: preferred_username

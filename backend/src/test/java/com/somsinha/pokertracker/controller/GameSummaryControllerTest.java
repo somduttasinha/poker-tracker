@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class GameSummaryControllerTest {
 
-  @Autowired private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
   @Autowired private ObjectMapper objectMapper;
 

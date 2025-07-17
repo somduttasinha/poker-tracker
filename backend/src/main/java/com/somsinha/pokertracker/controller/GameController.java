@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,6 +49,7 @@ public class GameController {
    * @return ResponseEntity containing a list of games.
    */
   @GetMapping
+  @PreAuthorize("hasRole('client_user')")
   public ResponseEntity<List<Game>> getAllGames(@RequestParam(required = false) Boolean finished) {
     if (finished != null && !finished) {
       return ResponseEntity.ok(gameService.getAllGames());
@@ -63,6 +65,7 @@ public class GameController {
    * @return ResponseEntity containing a list of finished games.
    */
   @GetMapping("/finished")
+  @PreAuthorize("hasRole('client_admin')")
   public ResponseEntity<List<Game>> getFinishedGamesSince(@RequestParam("since") Integer since) {
     try {
       LocalDateTime dateTime = LocalDateTime.now().minusHours(since);
