@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.somsinha.pokertracker.model.Game;
 import com.somsinha.pokertracker.repository.GameRepository;
+import com.somsinha.pokertracker.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class GameServiceTest {
 
   @Autowired private GameRepository gameRepository;
+  @Autowired private UserRepository userRepository;
 
   private GameService gameService;
 
@@ -53,7 +55,7 @@ class GameServiceTest {
                 .finished(false)
                 .build()));
 
-    gameService = new GameService(gameRepository);
+    gameService = new GameService(gameRepository, userRepository);
   }
 
   @AfterEach

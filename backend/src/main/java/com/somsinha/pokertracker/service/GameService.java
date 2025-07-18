@@ -1,31 +1,60 @@
 package com.somsinha.pokertracker.service;
 
 import com.somsinha.pokertracker.model.Game;
+import com.somsinha.pokertracker.model.User;
 import com.somsinha.pokertracker.repository.GameRepository;
+import com.somsinha.pokertracker.repository.UserRepository;
+import com.somsinha.pokertracker.utils.SecurityUtils;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class GameService {
 
-  private GameRepository gameRepository;
+  private final GameRepository gameRepository;
+  private final UserRepository userRepository;
 
-  public GameService(GameRepository gameRepository) {
-    this.gameRepository = gameRepository;
-  }
-
-  public List<Game> getAllGames() {
+  public List<Game> getAllGames(Optional<String> keycloakId) {
+    if (keycloakId.isPresent()) {
+      User user = userRepository.findByKeycloakId(keycloakId.get()).get();
+      return gameRepository.findByCreatedBy(user);
+    }
     return gameRepository.findAll();
   }
 
-  public List<Game> getAllActiveGames() {
+  public List<Game> getAllActiveGames(Optional<String> keycloakId) {
+    if (keycloakId.isPresent()) {
+      User user = userRepository.findByKeycloakId(keycloakId.get()).get();
+      return gameRepository.findByFinishedAndCreatedBy(false, user);
+    }
+
     return gameRepository.findByFinished(false);
   }
 
   public Game createGame(Game game) {
+
+    String keycloakId = SecurityUtils.getCurrentKeycloakId();
+    String username = SecurityUtils.getCurrentUsername();
+
+    User user =
+        userRepository
+            .findByKeycloakId(keycloakId)
+            .orElseGet(
+                () -> {
+                  User newUser = new User();
+                  newUser.setKeycloakId(keycloakId);
+                  newUser.setPreferredUsername(username);
+                  return userRepository.save(newUser);
+                });
+
     game.setDateCreated(LocalDateTime.now());
+    game.setCreatedBy(user);
+
     Game saved = gameRepository.save(game);
     return saved;
   }

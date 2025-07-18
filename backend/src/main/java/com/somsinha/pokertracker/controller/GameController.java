@@ -2,11 +2,15 @@ package com.somsinha.pokertracker.controller;
 
 import com.somsinha.pokertracker.model.Game;
 import com.somsinha.pokertracker.service.GameService;
+import com.somsinha.pokertracker.utils.SecurityUtils;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +31,9 @@ public class GameController {
   }
 
   @PostMapping
+  @PreAuthorize("hasRole('client_user')")
   public ResponseEntity<Game> createGame(@RequestBody Game game) {
+
     Game saved = gameService.createGame(game);
     return ResponseEntity.ok(saved);
   }
@@ -50,12 +56,29 @@ public class GameController {
    */
   @GetMapping
   @PreAuthorize("hasRole('client_user')")
-  public ResponseEntity<List<Game>> getAllGames(@RequestParam(required = false) Boolean finished) {
-    if (finished != null && !finished) {
-      return ResponseEntity.ok(gameService.getAllGames());
-    } else {
-      return ResponseEntity.ok(gameService.getAllActiveGames());
+  public ResponseEntity<List<Game>> getAllGames(
+      @RequestParam(required = false) Boolean finished, Authentication authentication) {
+    if (authentication.getAuthorities().stream()
+        .anyMatch(a -> a.getAuthority().equals("ROLE_client_admin"))) {
+      if (finished != null && !finished) {
+        return ResponseEntity.ok(gameService.getAllGames(Optional.empty()));
+      } else {
+        return ResponseEntity.ok(gameService.getAllActiveGames(Optional.empty()));
+      }
     }
+    if (authentication.getAuthorities().stream()
+        .anyMatch(a -> a.getAuthority().equals("ROLE_client_user"))) {
+
+      String keycloakId = SecurityUtils.getCurrentKeycloakId();
+
+      if (finished != null && !finished) {
+        return ResponseEntity.ok(gameService.getAllActiveGames(Optional.of(keycloakId)));
+      } else {
+        return ResponseEntity.ok(gameService.getAllActiveGames(Optional.of(keycloakId)));
+      }
+    }
+
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
   }
 
   /**

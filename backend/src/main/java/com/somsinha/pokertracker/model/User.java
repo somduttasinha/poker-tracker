@@ -1,11 +1,10 @@
 package com.somsinha.pokertracker.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import java.time.LocalDateTime;
+import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,20 +16,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Game {
+@Table(name = "users") // 👈 Safer name
+public class User {
+
   @Id
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
   private UUID id;
 
-  private String name;
+  @Column(unique = true, nullable = false)
+  private String preferredUsername;
 
-  private LocalDateTime dateCreated;
-
-  private LocalDateTime dateFinished;
-
-  private boolean finished;
-
-  @ManyToOne
-  @JoinColumn(name = "created_by")
-  private User createdBy;
+  @Column(unique = true, nullable = false)
+  private String keycloakId;
 }
