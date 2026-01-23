@@ -1,0 +1,15 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "backend/pom.xml",
+          "xpath": "//project/version"
+        }
+      ],
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
+}
