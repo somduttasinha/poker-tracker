@@ -11,15 +11,9 @@ name: release-please
 
 jobs:
   release-please:
-    if: github.head_ref != 'release-please--branches--main'
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(main): release') }}
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
         with:
-          # this assumes that you have created a personal access token
-          # (PAT) and configured it as a GitHub action secret named
-          # `MY_RELEASE_PLEASE_TOKEN` (this secret name is not important).
           token: ${{ secrets.PAT }}
-          # this is a built-in strategy in release-please, see "Action Inputs"
-          # for more options
-          release-type: maven
