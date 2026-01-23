@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/somduttasinha/poker-tracker/compare/v0.3.1...v0.3.2) (2026-01-23)
+
+
+### Bug Fixes
+
+* allow decimal increments ([#23](https://github.com/somduttasinha/poker-tracker/issues/23)) ([57c28eb](https://github.com/somduttasinha/poker-tracker/commit/57c28eb3b5eef6fe69b7788232bbaa6ecfcf854a))
+
 ## [0.3.1](https://github.com/somduttasinha/poker-tracker/compare/v0.3.0...v0.3.1) (2025-07-12)
 
 
