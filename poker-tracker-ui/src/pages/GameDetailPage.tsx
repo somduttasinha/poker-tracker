@@ -225,6 +225,7 @@ export default function GameDetailPage() {
               type="number"
               value={amount}
               min={1}
+              step="0.01"
               onChange={(e) => setAmount(e.target.value)}
               placeholder="Amount"
               className="border px-3 py-1 rounded w-32"

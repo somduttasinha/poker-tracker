@@ -72,6 +72,7 @@ const FinaliseGameModal: React.FC<Props> = ({
                             <input
                                 type="number"
                                 min="0"
+                                step="0.01"
                                 value={finalStacks[player.id] ?? ""}
                                 onChange={(e) =>
                                     setFinalStacks((prev) => ({
