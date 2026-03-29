@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.somsinha</groupId>
 	<artifactId>poker-tracker</artifactId>
-	<version>0.3.2</version>
+	<version>0.3.3-SNAPSHOT</version>
 	<name>poker-tracker</name>
 	<description>Home poker game tracker</description>
 	<url/>
